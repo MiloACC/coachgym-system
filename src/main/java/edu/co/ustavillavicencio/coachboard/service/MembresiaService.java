@@ -26,7 +26,7 @@ public class MembresiaService {
     public MembresiaResponse crear(CrearMembresiaRequest req, UserPrincipal principal) {
         Organizacion org = organizacionService.findOrThrow(principal.getOrganizacionId());
         if (membresiaRepository.existsByNombreAndOrganizacion_Id(req.getNombre(), org.getId()))
-            throw new BusinessException("Ya existe una membresÃ­a con ese nombre en la organizaciÃ³n");
+            throw new BusinessException("Ya existe una membresía con ese nombre en la organización");
 
         Membresia m = Membresia.builder()
             .nombre(req.getNombre())
@@ -60,7 +60,7 @@ public class MembresiaService {
         Membresia m = findInOrg(id, principal.getOrganizacionId());
         if (!m.getNombre().equals(req.getNombre()) &&
                 membresiaRepository.existsByNombreAndOrganizacion_Id(req.getNombre(), principal.getOrganizacionId()))
-            throw new BusinessException("Ya existe una membresÃ­a con ese nombre");
+            throw new BusinessException("Ya existe una membresía con ese nombre");
         m.setNombre(req.getNombre());
         m.setDescripcion(req.getDescripcion());
         m.setDuracionDias(req.getDuracionDias());
@@ -77,12 +77,12 @@ public class MembresiaService {
 
     private Membresia findInOrg(Long id, Long orgId) {
         return membresiaRepository.findByIdAndOrganizacion_Id(id, orgId)
-            .orElseThrow(() -> new ResourceNotFoundException("MembresÃ­a no encontrada"));
+            .orElseThrow(() -> new ResourceNotFoundException("Membresía no encontrada"));
     }
 
     public Membresia findOrThrow(Long id) {
         return membresiaRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("MembresÃ­a no encontrada: " + id));
+            .orElseThrow(() -> new ResourceNotFoundException("Membresía no encontrada: " + id));
     }
 
     private MembresiaResponse toResponse(Membresia m) {
