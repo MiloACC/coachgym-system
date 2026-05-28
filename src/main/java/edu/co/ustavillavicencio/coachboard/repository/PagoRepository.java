@@ -17,6 +17,9 @@ public interface PagoRepository extends JpaRepository<Pago, Long> {
     // Obtener pagos de una inscripción
     List<Pago> findByInscripcion_Id(Long inscripcionId);
 
+    // Obtener todos los pagos de un cliente
+    List<Pago> findByInscripcion_Cliente_Id(Long clienteId);
+
     // Obtener pagos completados en un rango de fechas
     @Query("SELECT p FROM Pago p " +
             "WHERE p.inscripcion.cliente.usuario.organizacion.id = :organizacionId " +
