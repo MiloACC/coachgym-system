@@ -33,7 +33,7 @@ public class Usuario {
 
     // Rol del usuario en el sistema
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "rol")
     private Rol rol;
 
     // Organización a la que pertenece el usuario

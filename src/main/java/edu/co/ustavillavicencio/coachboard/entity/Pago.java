@@ -30,12 +30,12 @@ public class Pago {
 
     // Método de pago utilizado
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "metodo_de_pago")
     private MetodoDePago metodoDePago;
 
     // Estado actual del pago
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "estado_del_pago")
     private EstadoDelPago estadoDelPago;
 
     // Inscripción asociada al pago

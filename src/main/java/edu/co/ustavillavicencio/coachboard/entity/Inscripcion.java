@@ -30,7 +30,7 @@ public class Inscripcion {
 
     // Estado actual de la inscripción
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "estado_inscripcion")
     private EstadoInscripcion estado;
 
     // Cliente asociado a la inscripción

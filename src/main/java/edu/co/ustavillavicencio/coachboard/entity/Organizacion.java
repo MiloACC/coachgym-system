@@ -31,12 +31,12 @@ public class Organizacion {
 
     // Tipo de deporte de la organización
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "tipo_deporte")
     private TipoDeporte tipoDeporte;
 
     // Plan SaaS contratado
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "plan_saas")
     private PlanSaaS plan;
 
     // Estado de la organización

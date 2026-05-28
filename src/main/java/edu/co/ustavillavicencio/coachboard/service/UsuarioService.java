@@ -1,9 +1,12 @@
 package edu.co.ustavillavicencio.coachboard.service;
 
 import edu.co.ustavillavicencio.coachboard.dto.request.CrearAdminOrganizacionRequest;
+import edu.co.ustavillavicencio.coachboard.dto.request.CrearOrganizacionRequest;
 import edu.co.ustavillavicencio.coachboard.dto.request.CrearStaffRequest;
 import edu.co.ustavillavicencio.coachboard.dto.request.LoginRequest;
+import edu.co.ustavillavicencio.coachboard.dto.request.RegisterRequest;
 import edu.co.ustavillavicencio.coachboard.dto.response.JwtResponse;
+import edu.co.ustavillavicencio.coachboard.dto.response.OrganizacionResponse;
 import edu.co.ustavillavicencio.coachboard.dto.response.UsuarioResponse;
 import edu.co.ustavillavicencio.coachboard.entity.Organizacion;
 import edu.co.ustavillavicencio.coachboard.entity.Usuario;
@@ -32,6 +35,39 @@ public class UsuarioService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
+
+    @Transactional
+    public JwtResponse register(RegisterRequest req) {
+        CrearOrganizacionRequest orgReq = new CrearOrganizacionRequest();
+        orgReq.setNombre(req.getNombreOrganizacion());
+        orgReq.setSlug(req.getSlug());
+        orgReq.setTipoDeporte(req.getTipoDeporte());
+        orgReq.setPlan(req.getPlan());
+        OrganizacionResponse orgResp = organizacionService.crear(orgReq);
+
+        Organizacion org = organizacionService.findOrThrow(orgResp.getId());
+
+        validarUnicidad(req.getUsername(), req.getEmail());
+        Usuario usuario = Usuario.builder()
+            .username(req.getUsername())
+            .password(passwordEncoder.encode(req.getPassword()))
+            .email(req.getEmail())
+            .rol(Rol.ORG_ADMIN)
+            .organizacion(org)
+            .build();
+        usuario = usuarioRepository.save(usuario);
+
+        UserPrincipal principal = UserPrincipal.build(usuario);
+        String token = jwtUtils.generateToken(principal);
+        return JwtResponse.builder()
+            .token(token)
+            .userId(principal.getUserId())
+            .username(principal.getUsername())
+            .email(principal.getEmail())
+            .rol(principal.getRol().name())
+            .organizacionId(principal.getOrganizacionId())
+            .build();
+    }
 
     public JwtResponse login(LoginRequest req) {
         Authentication auth = authenticationManager.authenticate(

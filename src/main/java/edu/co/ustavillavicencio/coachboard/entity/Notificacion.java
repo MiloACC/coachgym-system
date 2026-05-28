@@ -21,7 +21,7 @@ public class Notificacion {
 
     // Tipo de notificación
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "tipo_de_notificacion")
     private TipoDeNotificacion tipo;
 
     // Mensaje de la notificación
