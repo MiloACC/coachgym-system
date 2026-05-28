@@ -21,6 +21,9 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> 
     // Obtener historial de inscripciones del cliente
     List<Inscripcion> findByCliente_IdOrderByFechaDeInicioDesc(Long clienteId);
 
+    // Obtener todas las inscripciones de una organización
+    List<Inscripcion> findByCliente_Usuario_Organizacion_Id(Long organizacionId);
+
     // Obtener inscripciones por estado dentro de una organización
     List<Inscripcion> findByCliente_Usuario_Organizacion_IdAndEstado(
             Long organizacionId, EstadoInscripcion estado);
